@@ -30,13 +30,23 @@
       </div>
     </div>
 
-    <div class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary">
+    <q-form
+      @submit="addEntry"
+      class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary"
+    >
       <div class="col">
-        <q-input outlined dense placeholder="Name" bg-color="white" />
+        <q-input
+          v-model="addEntryForm.name"
+          outlined
+          dense
+          placeholder="Name"
+          bg-color="white"
+        />
       </div>
       <div class="col">
         <div class="col">
           <q-input
+            v-model.number="addEntryForm.amount"
             input-class="text-right"
             outlined
             dense
@@ -48,14 +58,15 @@
         </div>
       </div>
       <div class="col col-auto">
-        <q-btn round color="primary" icon="add" />
+        <q-btn round color="primary" icon="add" type="submit" />
       </div>
-    </div>
+    </q-form>
   </q-footer>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import { uid } from 'quasar';
 import { useCurrencify } from '../composables/useCurrencify';
 import { useAmountColorClass } from '../composables/useAmountColorClass';
 
@@ -85,4 +96,19 @@ const entries = ref([
 const balance = computed(() =>
   entries.value.reduce((acc, { amount }) => acc + amount, 0)
 );
+
+const addEntryForm = reactive({
+  name: '',
+  amount: null,
+});
+
+const addEntry = () => {
+  const newEntry = {
+    id: uid(),
+    name: addEntryForm.name,
+    amount: addEntryForm.amount,
+  };
+
+  entries.push(newEntry);
+};
 </script>

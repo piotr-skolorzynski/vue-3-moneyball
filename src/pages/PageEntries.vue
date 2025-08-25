@@ -3,11 +3,18 @@
     <div class="q-pa-md">
       <q-list bordered separator>
         <q-item v-for="entry in entries" :key="entry.id">
-          <q-item-section :class="useAmountColorClass(entry.amount)">
+          <q-item-section
+            class="text-weight-bold"
+            :class="useAmountColorClass(entry.amount)"
+          >
             {{ entry.name }}
           </q-item-section>
 
-          <q-item-section side :class="useAmountColorClass(entry.amount)">
+          <q-item-section
+            side
+            class="text-weight-bold"
+            :class="useAmountColorClass(entry.amount)"
+          >
             {{ useCurrencify(entry.amount) }}
           </q-item-section>
         </q-item>

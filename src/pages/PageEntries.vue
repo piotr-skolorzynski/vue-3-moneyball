@@ -3,9 +3,11 @@
     <div class="q-pa-md">
       <q-list bordered separator>
         <q-item v-for="entry in entries" :key="entry.id">
-          <q-item-section>{{ entry.name }} </q-item-section>
+          <q-item-section :class="useAmountColorClass(entry.amount)">
+            {{ entry.name }}
+          </q-item-section>
 
-          <q-item-section side>
+          <q-item-section side :class="useAmountColorClass(entry.amount)">
             {{ useCurrencify(entry.amount) }}
           </q-item-section>
         </q-item>
@@ -17,6 +19,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useCurrencify } from '../composables/useCurrencify';
+import { useAmountColorClass } from '../composables/useAmountColorClass';
 
 const entries = ref([
   {

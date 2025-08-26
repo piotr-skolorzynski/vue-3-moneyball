@@ -135,9 +135,10 @@ const addEntry = () => {
   addEntryFormReset();
 };
 
-const deleteEntry = (id) =>
-  (entries.value = entries.value.filter((entry) => entry.id !== id));
-
+const deleteEntry = (id) => {
+  entries.value = entries.value.filter((entry) => entry.id !== id);
+  $q.notify({ message: 'Entry deleted', position: 'top' });
+};
 const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
   $q.dialog({
     title: 'Delete Entry',

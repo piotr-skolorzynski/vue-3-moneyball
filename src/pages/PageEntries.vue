@@ -47,7 +47,7 @@
     </div>
 
     <q-form
-      @submit="addEntry"
+      @submit="addEntryFormSubmit"
       class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary"
     >
       <div class="col">
@@ -83,38 +83,14 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue';
-import { uid, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
+import { useStoreEntries } from '../stores/storeEntries';
 import { useCurrencify } from '../composables/useCurrencify';
 import { useAmountColorClass } from '../composables/useAmountColorClass';
 
 const $q = useQuasar();
 const nameRef = ref(null);
-const entries = ref([
-  {
-    id: 'id1',
-    name: 'Salary',
-    amount: 4999.99,
-  },
-  {
-    id: 'id2',
-    name: 'Rent',
-    amount: -999,
-  },
-  {
-    id: 'id3',
-    name: 'Phone',
-    amount: -14.99,
-  },
-  {
-    id: 'id4',
-    name: 'Uknown',
-    amount: 0,
-  },
-]);
-
-const balance = computed(() =>
-  entries.value.reduce((acc, { amount }) => acc + amount, 0)
-);
+const { entries, balance, addEntry, deleteEntry } = useStoreEntries();
 
 const addEntryFormDefault = {
   name: '',
@@ -128,17 +104,6 @@ const addEntryFormReset = () => {
   nameRef.value.focus();
 };
 
-const addEntry = () => {
-  const newEntry = Object.assign({}, addEntryForm, { id: uid() });
-
-  entries.value.push(newEntry);
-  addEntryFormReset();
-};
-
-const deleteEntry = (id) => {
-  entries.value = entries.value.filter((entry) => entry.id !== id);
-  $q.notify({ message: 'Entry deleted', position: 'top' });
-};
 const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
   $q.dialog({
     title: 'Delete Entry',
@@ -167,5 +132,10 @@ const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
     .onCancel(() => {
       reset();
     });
+};
+
+const addEntryFormSubmit = () => {
+  addEntry(addEntryForm);
+  addEntryFormReset();
 };
 </script>

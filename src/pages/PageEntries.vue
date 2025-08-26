@@ -41,64 +41,20 @@
   <q-footer class="bg-transparent">
     <Balance />
 
-    <q-form
-      @submit="addEntryFormSubmit"
-      class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary"
-    >
-      <div class="col">
-        <q-input
-          v-model="addEntryForm.name"
-          ref="nameRef"
-          outlined
-          dense
-          placeholder="Name"
-          bg-color="white"
-        />
-      </div>
-      <div class="col">
-        <div class="col">
-          <q-input
-            v-model.number="addEntryForm.amount"
-            input-class="text-right"
-            outlined
-            dense
-            type="number"
-            step="0.01"
-            placeholder="Amount"
-            bg-color="white"
-          />
-        </div>
-      </div>
-      <div class="col col-auto">
-        <q-btn round color="primary" icon="add" type="submit" />
-      </div>
-    </q-form>
+    <AddEntry />
   </q-footer>
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useStoreEntries } from '../stores/storeEntries';
 import { useCurrencify } from '../composables/useCurrencify';
 import { useAmountColorClass } from '../composables/useAmountColorClass';
 import Balance from '../components/Entries/Balance.vue';
+import AddEntry from '../components/Entries/AddEntry.vue';
 
 const $q = useQuasar();
-const nameRef = ref(null);
-const { entries, balance, addEntry, deleteEntry } = useStoreEntries();
-
-const addEntryFormDefault = {
-  name: '',
-  amount: null,
-};
-
-const addEntryForm = reactive({ ...addEntryFormDefault });
-
-const addEntryFormReset = () => {
-  Object.assign(addEntryForm, addEntryFormDefault);
-  nameRef.value.focus();
-};
+const { deleteEntry } = useStoreEntries();
 
 const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
   $q.dialog({
@@ -128,10 +84,5 @@ const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
     .onCancel(() => {
       reset();
     });
-};
-
-const addEntryFormSubmit = () => {
-  addEntry(addEntryForm);
-  addEntryFormReset();
 };
 </script>

@@ -48,7 +48,6 @@ export const useStoreEntries = defineStore('entries', () => {
         Notify.create({ message: 'Entry deleted', position: 'top' });
     };
 
-
     /* return */
     return { entries, balance, addEntry, deleteEntry };
 })

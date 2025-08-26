@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-list bordered separator>
         <q-slide-item
-          @right="onRight"
+          @right="onEntrySlideRight"
           left-color="positive"
           right-color="negative"
           v-for="entry in entries"
@@ -83,12 +83,12 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue';
-import { uid } from 'quasar';
+import { uid, useQuasar } from 'quasar';
 import { useCurrencify } from '../composables/useCurrencify';
 import { useAmountColorClass } from '../composables/useAmountColorClass';
 
+const $q = useQuasar();
 const nameRef = ref(null);
-
 const entries = ref([
   {
     id: 'id1',
@@ -133,5 +133,29 @@ const addEntry = () => {
 
   entries.value.push(newEntry);
   addEntryFormReset();
+};
+
+const onEntrySlideRight = ({ reset }) => {
+  $q.dialog({
+    title: 'Delete Entry',
+    message: 'Delete this entry?',
+    cancel: true,
+    persistent: true,
+    ok: {
+      label: 'Delete',
+      color: 'negative',
+      noCaps: true,
+    },
+    cancel: {
+      color: 'primary',
+      noCaps: true,
+    },
+  })
+    .onOk(() => {
+      console.log('>>>> OK');
+    })
+    .onCancel(() => {
+      reset();
+    });
 };
 </script>

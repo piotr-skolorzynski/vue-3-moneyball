@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-list bordered separator>
         <q-slide-item
-          @right="onEntrySlideRight($event, entry.id)"
+          @right="onEntrySlideRight($event, entry)"
           left-color="positive"
           right-color="negative"
           v-for="entry in entries"
@@ -138,12 +138,18 @@ const addEntry = () => {
 const deleteEntry = (id) =>
   (entries.value = entries.value.filter((entry) => entry.id !== id));
 
-const onEntrySlideRight = ({ reset }, entryId) => {
+const onEntrySlideRight = ({ reset }, { id, name, amount }) => {
   $q.dialog({
     title: 'Delete Entry',
-    message: 'Delete this entry?',
+    message: `
+      Delete this entry?
+      <div class="q-mt-md text-weight-bold ${useAmountColorClass(amount)}">
+        ${name} : ${useCurrencify(amount)}
+      </div>
+    `,
     cancel: true,
     persistent: true,
+    html: true,
     ok: {
       label: 'Delete',
       color: 'negative',
@@ -155,7 +161,7 @@ const onEntrySlideRight = ({ reset }, entryId) => {
     },
   })
     .onOk(() => {
-      deleteEntry(entryId);
+      deleteEntry(id);
     })
     .onCancel(() => {
       reset();

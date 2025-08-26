@@ -1,7 +1,9 @@
 <template>
   <q-page>
     <div class="q-pa-md">
-      <q-list bordered separator>
+      <NothingHere v-if="!entries.length" />
+
+      <q-list v-else bordered separator>
         <Entry v-for="entry in entries" :key="entry.id" :entry="entry" />
       </q-list>
     </div>
@@ -19,6 +21,7 @@ import { useStoreEntries } from '../stores/storeEntries';
 import Balance from '../components/Entries/Balance.vue';
 import AddEntry from '../components/Entries/AddEntry.vue';
 import Entry from '../components/Entries/Entry.vue';
+import NothingHere from '../components/Entries/NothingHere.vue';
 
 const { entries } = useStoreEntries();
 </script>

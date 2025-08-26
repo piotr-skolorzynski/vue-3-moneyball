@@ -37,6 +37,7 @@
       <div class="col">
         <q-input
           v-model="addEntryForm.name"
+          ref="nameRef"
           outlined
           dense
           placeholder="Name"
@@ -69,6 +70,8 @@ import { computed, reactive, ref } from 'vue';
 import { uid } from 'quasar';
 import { useCurrencify } from '../composables/useCurrencify';
 import { useAmountColorClass } from '../composables/useAmountColorClass';
+
+const nameRef = ref(null);
 
 const entries = ref([
   {
@@ -106,18 +109,13 @@ const addEntryForm = reactive({ ...addEntryFormDefault });
 
 const addEntryFormReset = () => {
   Object.assign(addEntryForm, addEntryFormDefault);
+  nameRef.value.focus();
 };
 
 const addEntry = () => {
-  // const newEntry = {
-  //   id: uid(),
-  //   name: addEntryForm.name,
-  //   amount: addEntryForm.amount,
-  // };
-
   const newEntry = Object.assign({}, addEntryForm, { id: uid() });
 
-  entries.push(newEntry);
+  entries.value.push(newEntry);
   addEntryFormReset();
 };
 </script>

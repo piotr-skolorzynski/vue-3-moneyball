@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-list bordered separator>
         <q-slide-item
-          @right="onEntrySlideRight"
+          @right="onEntrySlideRight($event, entry.id)"
           left-color="positive"
           right-color="negative"
           v-for="entry in entries"
@@ -135,7 +135,10 @@ const addEntry = () => {
   addEntryFormReset();
 };
 
-const onEntrySlideRight = ({ reset }) => {
+const deleteEntry = (id) =>
+  (entries.value = entries.value.filter((entry) => entry.id !== id));
+
+const onEntrySlideRight = ({ reset }, entryId) => {
   $q.dialog({
     title: 'Delete Entry',
     message: 'Delete this entry?',
@@ -152,7 +155,7 @@ const onEntrySlideRight = ({ reset }) => {
     },
   })
     .onOk(() => {
-      console.log('>>>> OK');
+      deleteEntry(entryId);
     })
     .onCancel(() => {
       reset();

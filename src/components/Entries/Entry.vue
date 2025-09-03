@@ -11,14 +11,13 @@
     <q-item>
       <q-item-section class="text-weight-bold" :class="useAmountColorClass(entry.amount)">
         {{ entry.name }}
-        <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" style="opacity: 0.5">
+        <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok">
           <q-input
             v-model="scope.value"
             dense
             autofocus
-            counter
             @keyup.enter="scope.set"
-            input-class="text-weight-bold"
+            input-class="text-weight-bold letter-spacing-none"
           />
         </q-popup-edit>
       </q-item-section>

@@ -1,53 +1,63 @@
-import { computed, ref } from 'vue';
-import { defineStore } from 'pinia';
-import { uid, Notify, } from 'quasar';
+import { computed, ref } from "vue";
+import { defineStore } from "pinia";
+import { uid, Notify } from "quasar";
 
+export const useStoreEntries = defineStore("entries", () => {
+  /* state */
+  const entries = ref([
+    {
+      id: "id1",
+      name: "Salary",
+      amount: 4999.99,
+    },
+    {
+      id: "id2",
+      name: "Rent",
+      amount: -999,
+    },
+    {
+      id: "id3",
+      name: "Phone",
+      amount: -14.99,
+    },
+    {
+      id: "id4",
+      name: "Uknown",
+      amount: 0,
+    },
+  ]);
 
-export const useStoreEntries = defineStore('entries', () => {
+  /* getters */
 
-    /* state */
-    const entries = ref([
-        {
-            id: 'id1',
-            name: 'Salary',
-            amount: 4999.99,
-        },
-        {
-            id: 'id2',
-            name: 'Rent',
-            amount: -999,
-        },
-        {
-            id: 'id3',
-            name: 'Phone',
-            amount: -14.99,
-        },
-        {
-            id: 'id4',
-            name: 'Uknown',
-            amount: 0,
-        },
-    ]);
+  const balance = computed(() =>
+    entries.value.reduce((acc, { amount }) => acc + amount, 0)
+  );
 
-    /* getters */
+  /* actions */
 
-    const balance = computed(() =>
-        entries.value.reduce((acc, { amount }) => acc + amount, 0)
-    );
+  const addEntry = (entryForm) => {
+    const newEntry = Object.assign({}, entryForm, { id: uid() });
+    entries.value.push(newEntry);
+  };
 
-    /* actions */
+  const deleteEntry = (id) => {
+    const index = getEntryIndexById(id);
+    entries.value.splice(index, 1);
+    Notify.create({ message: "Entry deleted", position: "top" });
+  };
 
-    const addEntry = (entryForm) => {
-        const newEntry = Object.assign({}, entryForm, { id: uid() });
-        entries.value.push(newEntry);
+  const updateEntry = (entryId, updates) => {
+    const index = getEntryIndexById(entryId);
+    if (index) {
+      Object.assign(entries.value[index], updates);
     }
+  };
 
-    const deleteEntry = (id) => {
-        const index = entries.value.findIndex(entry => entry.id === id);
-        entries.value.splice(index, 1);
-        Notify.create({ message: 'Entry deleted', position: 'top' });
-    };
+  /* helpers */
 
-    /* return */
-    return { entries, balance, addEntry, deleteEntry };
-})
+  const getEntryIndexById = (id) =>
+    entries.value.findIndex((entry) => entry.id === id);
+
+  /* return */
+  return { entries, balance, addEntry, deleteEntry, updateEntry };
+});

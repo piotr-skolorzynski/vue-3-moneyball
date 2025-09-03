@@ -11,7 +11,7 @@
     <q-item>
       <q-item-section class="text-weight-bold" :class="useAmountColorClass(entry.amount)">
         {{ entry.name }}
-        <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok">
+        <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok" @save="onNameUpdate">
           <q-input
             v-model="scope.value"
             dense
@@ -28,7 +28,7 @@
         :class="useAmountColorClass(entry.amount)"
       >
         {{ useCurrencify(entry.amount) }}
-        <q-popup-edit :model-value="entry.amount" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok">
+        <q-popup-edit :model-value="entry.amount" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok" @save="onAmountUpdate">
           <q-input
             v-model.number="scope.value"
             dense
@@ -58,7 +58,7 @@ const props = defineProps({
   },
 });
 const $q = useQuasar();
-const { deleteEntry } = useStoreEntries();
+const { deleteEntry, updateEntry } = useStoreEntries();
 
 const onEntrySlideRight = ({ reset }) => {
   $q.dialog({
@@ -88,5 +88,13 @@ const onEntrySlideRight = ({ reset }) => {
     .onCancel(() => {
       reset();
     });
+};
+
+const onNameUpdate = (value) => {
+  updateEntry(props.entry.id, {name: value});
+};
+
+const onAmountUpdate = (value) => {
+  updateEntry(props.entry.id, {amount: value})
 };
 </script>

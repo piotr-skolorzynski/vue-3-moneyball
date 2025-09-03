@@ -1,9 +1,5 @@
 <template>
-  <q-slide-item
-    @right="onEntrySlideRight"
-    left-color="positive"
-    right-color="negative"
-  >
+  <q-slide-item @right="onEntrySlideRight" left-color="positive" right-color="negative">
     <!-- <template v-slot:left> // to handle
             <q-icon name="done" />
           </template> -->
@@ -13,11 +9,18 @@
     </template>
 
     <q-item>
-      <q-item-section
-        class="text-weight-bold"
-        :class="useAmountColorClass(entry.amount)"
-      >
+      <q-item-section class="text-weight-bold" :class="useAmountColorClass(entry.amount)">
         {{ entry.name }}
+        <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" style="opacity: 0.5">
+          <q-input
+            v-model="scope.value"
+            dense
+            autofocus
+            counter
+            @keyup.enter="scope.set"
+            input-class="text-weight-bold"
+          />
+        </q-popup-edit>
       </q-item-section>
 
       <q-item-section
@@ -32,11 +35,11 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { useQuasar } from 'quasar';
-import { useStoreEntries } from '../../stores/storeEntries';
-import { useCurrencify } from '../../composables/useCurrencify';
-import { useAmountColorClass } from '../../composables/useAmountColorClass';
+import { defineProps } from "vue";
+import { useQuasar } from "quasar";
+import { useStoreEntries } from "../../stores/storeEntries";
+import { useCurrencify } from "../../composables/useCurrencify";
+import { useAmountColorClass } from "../../composables/useAmountColorClass";
 
 const props = defineProps({
   entry: {
@@ -49,12 +52,10 @@ const { deleteEntry } = useStoreEntries();
 
 const onEntrySlideRight = ({ reset }) => {
   $q.dialog({
-    title: 'Delete Entry',
+    title: "Delete Entry",
     message: `
       Delete this entry?
-      <div class="q-mt-md text-weight-bold ${useAmountColorClass(
-        props.entry.amount
-      )}">
+      <div class="q-mt-md text-weight-bold ${useAmountColorClass(props.entry.amount)}">
         ${props.entry.name} : ${useCurrencify(props.entry.amount)}
       </div>
     `,
@@ -62,12 +63,12 @@ const onEntrySlideRight = ({ reset }) => {
     persistent: true,
     html: true,
     ok: {
-      label: 'Delete',
-      color: 'negative',
+      label: "Delete",
+      color: "negative",
       noCaps: true,
     },
     cancel: {
-      color: 'primary',
+      color: "primary",
       noCaps: true,
     },
   })

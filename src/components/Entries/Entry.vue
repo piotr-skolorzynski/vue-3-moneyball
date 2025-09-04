@@ -1,8 +1,8 @@
 <template>
-  <q-slide-item @right="onEntrySlideRight" left-color="positive" right-color="negative">
-    <!-- <template v-slot:left> // to handle
-            <q-icon name="done" />
-          </template> -->
+  <q-slide-item @right="onEntrySlideRight" @right="onEntrySlideLeft" left-color="positive" right-color="negative">
+    <template v-slot:left> 
+      <q-icon name="done" />
+      </template>
 
     <template v-slot:right>
       <q-icon name="delete" />
@@ -88,6 +88,11 @@ const onEntrySlideRight = ({ reset }) => {
     .onCancel(() => {
       reset();
     });
+};
+
+const onEntrySlideLeft = ({ reset }) => {
+  updateEntry(props.entry.id, {paid: !props.entry.paid});
+  reset();
 };
 
 const onNameUpdate = (value) => {

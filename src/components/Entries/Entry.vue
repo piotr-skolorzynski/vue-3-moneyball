@@ -1,5 +1,5 @@
 <template>
-  <q-slide-item @right="onEntrySlideRight" @right="onEntrySlideLeft" left-color="positive" right-color="negative">
+  <q-slide-item @right="onEntrySlideRight" @left="onEntrySlideLeft" left-color="positive" right-color="negative" :class="{'bg-grey-2': entry.paid}">
     <template v-slot:left> 
       <q-icon name="done" />
       </template>
@@ -9,7 +9,7 @@
     </template>
 
     <q-item>
-      <q-item-section class="text-weight-bold" :class="useAmountColorClass(entry.amount)">
+      <q-item-section class="text-weight-bold" :class="[useAmountColorClass(entry.amount), {'text-strike': entry.paid} ]">
         {{ entry.name }}
         <q-popup-edit :model-value="entry.name" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok" @save="onNameUpdate">
           <q-input
@@ -25,7 +25,7 @@
       <q-item-section
         side
         class="text-weight-bold"
-        :class="useAmountColorClass(entry.amount)"
+        :class="[useAmountColorClass(entry.amount), {'text-strike': entry.paid} ]"
       >
         {{ useCurrencify(entry.amount) }}
         <q-popup-edit :model-value="entry.amount" auto-save v-slot="scope" anchor="top left" :offset="[16,12]" :cover="false" buttons label-set="Ok" @save="onAmountUpdate">

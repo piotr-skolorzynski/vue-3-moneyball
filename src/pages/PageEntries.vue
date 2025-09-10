@@ -3,20 +3,20 @@
     <div class="q-pa-md">
       <NothingHere v-if="!entries.length" />
 
-      <Sortable
-        @end="sortEnd"
-        :list="entries"
-        item-key="id"
-        tag="div"
-        :options="{handle: '.handle'}"
-        v-else
-      >
-        <template #item="{element, index}">
-          <q-list  bordered separator>
-            <Entry :key="element.id" :entry="element" />
-          </q-list>
-        </template>
-      </Sortable>
+      <q-list v-else class="entries">
+        <Sortable
+          @end="sortEnd"
+          :list="entries"
+          item-key="id"
+          tag="div"
+          :options="{handle: '.handle'}"
+
+        >
+          <template #item="{element, index}">
+              <Entry :key="element.id" :entry="element" />
+          </template>
+        </Sortable>
+      </q-list>
     </div>
   </q-page>
 

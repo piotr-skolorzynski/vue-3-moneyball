@@ -1,6 +1,6 @@
 <template>
   <q-slide-item @right="onEntrySlideRight" @left="onEntrySlideLeft" left-color="positive" right-color="negative" :class="{'bg-grey-2': entry.paid}">
-    <template v-slot:left> 
+    <template v-slot:left>
       <q-icon name="done" />
       </template>
 
@@ -40,6 +40,13 @@
           />
         </q-popup-edit>
       </q-item-section>
+
+      <q-item-section
+        v-if="options.sort"
+        side
+      >
+        <q-icon name="reorder" color="primary"></q-icon>
+      </q-item-section>
     </q-item>
   </q-slide-item>
 </template>
@@ -58,7 +65,7 @@ const props = defineProps({
   },
 });
 const $q = useQuasar();
-const { deleteEntry, updateEntry } = useStoreEntries();
+const { options, deleteEntry, updateEntry } = useStoreEntries();
 
 const onEntrySlideRight = ({ reset }) => {
   $q.dialog({

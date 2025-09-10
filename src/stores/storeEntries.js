@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import { uid, Notify } from "quasar";
 
@@ -33,6 +33,10 @@ export const useStoreEntries = defineStore("entries", () => {
       paid: false,
     },
   ]);
+
+  const options = reactive({
+    sort: false,
+  });
 
   /*
     getters
@@ -91,6 +95,7 @@ export const useStoreEntries = defineStore("entries", () => {
   return {
     // state
     entries,
+    options,
 
     // getters
     balance,

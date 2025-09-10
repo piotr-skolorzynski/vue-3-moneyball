@@ -1,9 +1,12 @@
-import { computed, ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { uid, Notify } from "quasar";
 
 export const useStoreEntries = defineStore("entries", () => {
-  /* state */
+  /*
+    state
+  */
+
   const entries = ref([
     {
       id: "id1",
@@ -19,49 +22,83 @@ export const useStoreEntries = defineStore("entries", () => {
     },
     {
       id: "id3",
-      name: "Phone",
+      name: "Phone bill",
       amount: -14.99,
       paid: false,
     },
     {
       id: "id4",
-      name: "Uknown",
+      name: "Unknown",
       amount: 0,
       paid: false,
     },
   ]);
 
-  /* getters */
+  /*
+    getters
+  */
 
-  const balance = computed(() =>
-    entries.value.reduce((acc, { amount }) => acc + amount, 0)
-  );
+  const balance = computed(() => {
+    return entries.value.reduce((accumulator, { amount }) => {
+      return accumulator + amount;
+    }, 0);
+  });
 
-  /* actions */
+  const balancePaid = computed(() => {
+    return entries.value.reduce((accumulator, { amount, paid }) => {
+      return paid ? accumulator + amount : accumulator;
+    }, 0);
+  });
 
-  const addEntry = (entryForm) => {
-    const newEntry = Object.assign({}, entryForm, { id: uid(), paid: false });
+  /*
+    actions
+  */
+
+  const addEntry = (addEntryForm) => {
+    const newEntry = Object.assign({}, addEntryForm, {
+      id: uid(),
+      paid: false,
+    });
     entries.value.push(newEntry);
   };
 
-  const deleteEntry = (id) => {
-    const index = getEntryIndexById(id);
+  const deleteEntry = (entryId) => {
+    const index = getEntryIndexById(entryId);
     entries.value.splice(index, 1);
-    Notify.create({ message: "Entry deleted", position: "top" });
+    Notify.create({
+      message: "Entry deleted",
+      position: "top",
+    });
   };
 
   const updateEntry = (entryId, updates) => {
     const index = getEntryIndexById(entryId);
-    if (index) {
-      Object.assign(entries.value[index], updates);
-    }
+    Object.assign(entries.value[index], updates);
   };
 
-  /* helpers */
+  /*
+    helpers
+  */
 
-  const getEntryIndexById = (id) =>
-    entries.value.findIndex((entry) => entry.id === id);
+  const getEntryIndexById = (entryId) => {
+    return entries.value.findIndex((entry) => entry.id === entryId);
+  };
 
-  /* return */
-  return { entries, balance, addEntry, deleteEntry, updateEntry };
+  /*
+    return
+  */
+
+  return {
+    // state
+    entries,
+
+    // getters
+    balance,
+    balancePaid,
+
+    // actions
+    addEntry,
+    deleteEntry,
+    updateEntry,
+  };
 });

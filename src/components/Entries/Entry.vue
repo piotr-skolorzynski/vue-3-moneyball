@@ -45,7 +45,7 @@
         v-if="options.sort"
         side
       >
-        <q-icon name="reorder" color="primary"></q-icon>
+        <q-icon name="reorder" color="primary" class="handle" />
       </q-item-section>
     </q-item>
   </q-slide-item>

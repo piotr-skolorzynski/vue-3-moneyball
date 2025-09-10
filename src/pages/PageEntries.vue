@@ -7,6 +7,7 @@
         :list="entries"
         item-key="id"
         tag="div"
+        :options="{handle: '.handle'}"
         v-else
       >
         <template #item="{element, index}">

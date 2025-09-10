@@ -4,6 +4,7 @@
       <NothingHere v-if="!entries.length" />
 
       <Sortable
+        @end="sortEnd"
         :list="entries"
         item-key="id"
         tag="div"
@@ -34,5 +35,5 @@ import AddEntry from '../components/Entries/AddEntry.vue';
 import Entry from '../components/Entries/Entry.vue';
 import NothingHere from '../components/Entries/NothingHere.vue';
 
-const { entries } = useStoreEntries();
+const { entries, sortEnd } = useStoreEntries();
 </script>

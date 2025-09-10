@@ -3,9 +3,18 @@
     <div class="q-pa-md">
       <NothingHere v-if="!entries.length" />
 
-      <q-list v-else bordered separator>
-        <Entry v-for="entry in entries" :key="entry.id" :entry="entry" />
-      </q-list>
+      <Sortable
+        :list="entries"
+        item-key="id"
+        tag="div"
+        v-else
+      >
+        <template #item="{element, index}">
+          <q-list  bordered separator>
+            <Entry :key="element.id" :entry="element" />
+          </q-list>
+        </template>
+      </Sortable>
     </div>
   </q-page>
 
@@ -17,6 +26,7 @@
 </template>
 
 <script setup>
+import { Sortable } from 'sortablejs-vue3';
 import { useStoreEntries } from '../stores/storeEntries';
 import Balance from '../components/Entries/Balance.vue';
 import AddEntry from '../components/Entries/AddEntry.vue';
